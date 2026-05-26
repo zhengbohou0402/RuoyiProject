@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/dkd?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=false
-                username: root
-                password:
+                url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:dkd}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=false"
+                username: ${MYSQL_USERNAME:root}
+                password: ${MYSQL_PASSWORD:}
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -40,15 +40,15 @@ spring:
             testOnBorrow: false
             testOnReturn: false
             webStatFilter:
-                enabled: true
+                enabled: ${DRUID_STAT_ENABLED:false}
             statViewServlet:
-                enabled: true
+                enabled: ${DRUID_STAT_ENABLED:false}
                 # 设置白名单，不填则允许所有访问
-                allow:
+                allow: ${DRUID_STAT_ALLOW:127.0.0.1}
                 url-pattern: /druid/*
                 # 控制台管理用户名和密码
-                login-username: ruoyi
-                login-password:
+                login-username: ${DRUID_STAT_USERNAME:ruoyi}
+                login-password: ${DRUID_STAT_PASSWORD:change-me}
             filter:
                 stat:
                     enabled: true
@@ -59,3 +59,10 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: false
+            # ClickHouse 数据源
+            clickhouse:
+                enabled: true
+                driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
+                jdbc-url: jdbc:clickhouse://${CLICKHOUSE_HOST:localhost}:${CLICKHOUSE_PORT:8123}/${CLICKHOUSE_DATABASE:easydata}
+                username: ${CLICKHOUSE_USERNAME:default}
+                password: ${CLICKHOUSE_PASSWORD:}

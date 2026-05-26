@@ -1,0 +1,89 @@
+ruoyi:
+  name: RuoYi
+  version: 3.8.7
+  copyrightYear: 2024
+  profile: ${RUOYI_PROFILE:D:/ruoyi/uploadPath}
+  addressEnabled: false
+  captchaType: math
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+    accept-count: 1000
+    threads:
+      max: 800
+      min-spare: 100
+
+logging:
+  level:
+    com.dkd: ${LOG_LEVEL_DKD:debug}
+    org.springframework: warn
+
+user:
+  password:
+    maxRetryCount: 5
+    lockTime: 10
+
+spring:
+  messages:
+    basename: i18n/messages
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+  devtools:
+    restart:
+      enabled: false
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DATABASE:0}
+    password: ${REDIS_PASSWORD:}
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms
+
+token:
+  header: Authorization
+  secret: ${TOKEN_SECRET:change-this-token-secret}
+  expireTime: ${TOKEN_EXPIRE_MINUTES:300}
+
+mybatis:
+  typeAliasesPackage: com.dkd.**.domain
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  configLocation: classpath:mybatis/mybatis-config.xml
+
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql
+
+swagger:
+  enabled: ${SWAGGER_ENABLED:false}
+  pathMapping: /dev-api
+
+xss:
+  enabled: true
+  excludes: /system/notice
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+dromara:
+  x-file-storage:
+    default-platform: aliyun-oss-1
+    thumbnail-suffix: ".min.jpg"
+    aliyun-oss:
+      - platform: aliyun-oss-1
+        enable-storage: ${ALIYUN_OSS_ENABLE:false}
+        access-key: ${ALIYUN_OSS_ACCESS_KEY:}
+        secret-key: ${ALIYUN_OSS_SECRET_KEY:}
+        end-point: ${ALIYUN_OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}
+        bucket-name: ${ALIYUN_OSS_BUCKET:dkd-itheima}
+        domain: ${ALIYUN_OSS_DOMAIN:https://dkd-itheima.oss-cn-beijing.aliyuncs.com/}
+        base-path: ${ALIYUN_OSS_BASE_PATH:dkd-images/}
