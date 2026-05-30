@@ -53,7 +53,8 @@ export function getCodeImg() {
   return request({
     url: '/captchaImage',
     headers: {
-      isToken: false
+      isToken: false,
+      silent: true
     },
     method: 'get',
     timeout: 20000
