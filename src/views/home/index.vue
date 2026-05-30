@@ -1,26 +1,33 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :span="18">
-        <el-row :gutter="20">
-          <el-col :span="13">
+    <div class="page-heading">
+      <div>
+        <h1>Operations</h1>
+        <p>Live vending machine tasks, sales, and equipment health.</p>
+      </div>
+    </div>
+
+    <el-row :gutter="16">
+      <el-col :xs="24" :lg="18">
+        <el-row :gutter="16">
+          <el-col :xs="24" :md="13">
             <home-user-task-stats />
           </el-col>
-          <el-col :span="11">
+          <el-col :xs="24" :md="11">
             <home-sku-sale-stats />
           </el-col>
         </el-row>
         <sku-sale-collect-chart />
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="24" :lg="6">
         <sku-sale-rank-chart />
       </el-col>
     </el-row>
-    <el-row :gutter="20" style="margin-top: 20px">
-      <el-col :span="14">
+    <el-row :gutter="16" class="home-row">
+      <el-col :xs="24" :lg="14">
         <partner-node-collect-chart />
       </el-col>
-      <el-col :span="10">
+      <el-col :xs="24" :lg="10">
         <abnormal-equipment-table />
       </el-col>
     </el-row>
@@ -38,6 +45,33 @@ import AbnormalEquipmentTable from './components/abnormal-equipment-table.vue'
 
 <style scoped lang="scss">
 .home {
+  .page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 18px;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32px;
+      color: #0f172a;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      line-height: 20px;
+      color: #64748b;
+    }
+  }
+
+  .home-row {
+    margin-top: 16px;
+  }
+
   blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
@@ -59,9 +93,9 @@ import AbnormalEquipmentTable from './components/abnormal-equipment-table.vue'
     margin: 0;
   }
 
-  font-family: 'open sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 13px;
-  color: #676a6c;
+  color: #475569;
   overflow-x: hidden;
 
   ul {
@@ -98,11 +132,15 @@ import AbnormalEquipmentTable from './components/abnormal-equipment-table.vue'
     }
   }
   :deep(.box) {
-    padding: 20px;
-    border-radius: 20px;
+    padding: 18px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: none;
     .title,
     .header {
       display: flex;
+      align-items: center;
       .el-icon{
         cursor: pointer;
       }
@@ -110,16 +148,15 @@ import AbnormalEquipmentTable from './components/abnormal-equipment-table.vue'
     .title {
       align-items: center;
       flex: 1;
-      font-size: 16px;
-      font-weight: 600;
-      color: #333;
-      
+      font-size: 14px;
+      font-weight: 650;
+      color: #0f172a;
     }
     .sub-title {
       margin-left: 10px;
       font-size: 12px;
       font-weight: 400;
-      color: #999;
+      color: #64748b;
     }
   }
   .chart {
@@ -131,9 +168,20 @@ import AbnormalEquipmentTable from './components/abnormal-equipment-table.vue'
   .sku-sale-rank {
     flex-direction: column;
     height: calc(60vh - 72px);
-    min-height: 538px;
+    min-height: 520px;
     background: #fff;
-    border-radius: 20px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  @media (max-width: 992px) {
+    .el-col {
+      margin-bottom: 16px;
+    }
+
+    .sku-sale-rank {
+      min-height: 360px;
+    }
   }
 }
 </style>

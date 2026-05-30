@@ -85,8 +85,8 @@ function isActive(r) {
 function activeStyle(tag) {
   if (!isActive(tag)) return {};
   return {
-    "background-color": theme.value,
-    "border-color": theme.value
+    "background-color": "#111827",
+    "border-color": "#111827"
   };
 }
 function isAffix(tag) {
@@ -243,11 +243,13 @@ function handleScroll() {
 
 <style lang='scss' scoped>
 .tags-view-container {
-  height: 34px;
+  height: 36px;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: none;
+  padding: 0 12px;
+
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -255,29 +257,37 @@ function handleScroll() {
       cursor: pointer;
       height: 26px;
       line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
+      border: none;
+      color: #475569;
+      background: #f8fafc;
+      padding: 0 12px;
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
+      margin-left: 6px;
+      margin-top: 5px;
+      border-radius: 13px;
+      transition: all 0.2s;
+
       &:first-of-type {
-        margin-left: 15px;
+        margin-left: 8px;
       }
       &:last-of-type {
-        margin-right: 15px;
+        margin-right: 8px;
+      }
+      &:hover {
+        background: #f1f5f9;
+        color: #111827;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #111827;
         color: #fff;
-        border-color: #42b983;
+        border-color: transparent;
+        font-weight: 500;
         &::before {
           content: "";
           background: #fff;
           display: inline-block;
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           position: relative;
           margin-right: 5px;
@@ -291,18 +301,20 @@ function handleScroll() {
     z-index: 3000;
     position: absolute;
     list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
+    padding: 4px 0;
+    border-radius: 8px;
     font-size: 12px;
     font-weight: 400;
-    color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    color: #0f172a;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e2e8f0;
     li {
       margin: 0;
-      padding: 7px 16px;
+      padding: 8px 16px;
       cursor: pointer;
+      transition: background 0.2s;
       &:hover {
-        background: #eee;
+        background: #f8fafc;
       }
     }
   }

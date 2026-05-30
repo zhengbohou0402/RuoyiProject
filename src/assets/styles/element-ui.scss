@@ -46,15 +46,39 @@
   }
 }
 
-// to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  border: 1px solid #e2e8f0;
+
+  .el-dialog__header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    margin: 0;
+
+    .el-dialog__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+  }
+
+  .el-dialog__body {
+    padding: 24px;
+    color: #475569;
+  }
+
+  .el-dialog__footer {
+    padding: 16px 24px 20px;
+    border-top: 1px solid #e2e8f0;
+  }
 }
 
-// refine element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
@@ -66,19 +90,21 @@
   }
 }
 
-// dropdown
 .el-dropdown-menu {
   a {
     display: block
   }
+
+  border-radius: 8px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+  border: 1px solid #e2e8f0;
+  padding: 4px 0;
 }
 
-// fix date-picker ui bug in filter-item
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
 }
 
-// to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
 }
@@ -93,4 +119,133 @@
 
 .el-dropdown .el-dropdown-link{
   color: var(--el-color-primary) !important;
+}
+
+// 表格
+.el-table {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+
+  th.el-table__cell {
+    background-color: #f8fafc !important;
+    color: #334155;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  td.el-table__cell {
+    font-size: 13px;
+    color: #475569;
+    border-bottom-color: #f1f5f9;
+  }
+
+  // 表格行 hover 效果
+  .el-table__body-wrapper {
+    .el-table__row {
+      transition: background 0.2s;
+      &:hover > td.el-table__cell {
+        background-color: #f7f8fa !important;
+      }
+    }
+  }
+}
+
+// 卡片
+.el-card {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  }
+}
+
+// 按钮
+.el-button--primary {
+  background: #111827;
+  border-color: #111827;
+  border-radius: 8px;
+
+  &:hover {
+    background: #334155;
+    border-color: #334155;
+  }
+
+  &:active {
+    background: #020617;
+    border-color: #020617;
+  }
+}
+
+.el-button {
+  border-radius: 8px;
+}
+
+.el-button--default {
+  &:hover {
+    color: #111827;
+    border-color: #cbd5e1;
+    background: #f8fafc;
+  }
+}
+
+// 输入框
+.el-input__wrapper {
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px #e2e8f0 inset;
+
+  &:hover {
+    box-shadow: 0 0 0 1px #cbd5e1 inset;
+  }
+
+  &.is-focus {
+    box-shadow: 0 0 0 1px #111827 inset;
+  }
+}
+
+.el-select .el-input__wrapper {
+  border-radius: 8px;
+}
+
+// 分页
+.pagination-container {
+  .el-pagination {
+    padding: 16px 0;
+
+    .el-pager li {
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+  }
+}
+
+// 标签
+.el-tag {
+  border-radius: 6px;
+}
+
+// 面包屑
+.el-breadcrumb {
+  font-size: 13px;
+}
+
+// 表单
+.el-form-item__label {
+  color: #334155;
+  font-weight: 500;
+}
+
+// 消息框
+.el-message-box {
+  border-radius: 12px;
+}
+
+// 通知
+.el-notification {
+  border-radius: 8px;
 }

@@ -1,11 +1,11 @@
 #app {
 
   .main-container {
-    // height: 100%;
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
-    background-color: #f8fafd;
+    background: linear-gradient(180deg, #ffffff 0, #f8fafc 220px);
+    min-height: 100%;
   }
 
   .sidebarHide {
@@ -13,10 +13,9 @@
   }
 
   .sidebar-container {
-    -webkit-transition: width .28s;
     transition: width 0.28s;
     width: $base-sidebar-width !important;
-    background-color: $base-menu-background;
+    background-color: #ffffff;
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -25,10 +24,8 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    border-right: 1px solid #e2e8f0;
 
-    // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
@@ -47,7 +44,7 @@
 
     &.has-logo {
       .el-scrollbar {
-        height: calc(100% - 50px);
+        height: calc(100% - 56px);
       }
     }
 
@@ -62,7 +59,9 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
+      font-size: 17px;
+      color: #64748b;
     }
 
     .el-menu {
@@ -71,21 +70,29 @@
       width: 100% !important;
     }
 
-    .el-menu-item, .menu-title {
+    .el-menu-item,
+    .el-sub-menu__title {
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
+      font-size: 14px;
+      height: 42px;
+      line-height: 42px;
+      margin: 3px 10px;
+      padding: 0 14px !important;
+      border-radius: 8px;
+      color: #475569 !important;
     }
 
     .el-menu-item .el-menu-tooltip__trigger {
       display: inline-block !important;
     }
 
-    // menu hover
     .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: #f8fafc !important;
+        color: #111827 !important;
       }
     }
 
@@ -98,7 +105,8 @@
       min-width: $base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: #f8fafc !important;
+        color: #111827 !important;
       }
     }
 
@@ -108,6 +116,17 @@
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
+      }
+    }
+
+    .el-menu-item.is-active {
+      background-color: #111827 !important;
+      color: #ffffff !important;
+      border-right: 0;
+      font-weight: 600;
+
+      .svg-icon {
+        color: #ffffff;
       }
     }
   }
@@ -129,7 +148,7 @@
         padding: 0 !important;
 
         .svg-icon {
-          margin-left: 20px;
+          margin-left: 18px;
         }
       }
     }
@@ -141,7 +160,7 @@
         padding: 0 !important;
 
         .svg-icon {
-          margin-left: 20px;
+          margin-left: 18px;
         }
 
       }
@@ -173,7 +192,6 @@
     min-width: $base-sidebar-width !important;
   }
 
-  // mobile responsive
   .mobile {
     .main-container {
       margin-left: 0px;
@@ -202,37 +220,37 @@
   }
 }
 
-// when menu collapsed
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
   }
 
   .nest-menu .el-sub-menu>.el-sub-menu__title,
   .el-menu-item {
     &:hover {
-      // you can use $sub-menuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: #f8fafc !important;
     }
   }
 
-  // the scroll bar appears when the sub-menu is too long
   >.el-menu--popup {
     max-height: 100vh;
     overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f1f5;
 
     &::-webkit-scrollbar-track-piece {
-      background: #d3dce6;
+      background: #f7f8fa;
     }
 
     &::-webkit-scrollbar {
-      width: 6px;
+      width: 4px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #99a9bf;
+      background: #c9cdd4;
       border-radius: 20px;
     }
   }
