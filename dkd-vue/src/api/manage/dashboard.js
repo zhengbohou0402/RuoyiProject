@@ -1,50 +1,54 @@
 import request from '@/utils/request'
 
-// 工单统计
+const previewHeaders = {
+  silent: import.meta.env.DEV
+}
+
 export function getTaskStats() {
   return request({
     url: '/home/dashboard/taskStats',
-    method: 'get'
+    method: 'get',
+    headers: previewHeaders
   })
 }
 
-// 销售统计
 export function getSaleStats() {
   return request({
     url: '/home/dashboard/saleStats',
-    method: 'get'
+    method: 'get',
+    headers: previewHeaders
   })
 }
 
-// 商品热榜
 export function getSkuRank() {
   return request({
     url: '/home/dashboard/skuRank',
-    method: 'get'
+    method: 'get',
+    headers: previewHeaders
   })
 }
 
-// 销售数据，包含趋势和分布。
 export function getSaleCollect(params) {
   return request({
     url: '/home/dashboard/saleCollect',
     method: 'get',
-    params
+    params,
+    headers: previewHeaders
   })
 }
 
-// 合作商点位数 Top5
 export function getPartnerNode() {
   return request({
     url: '/home/dashboard/partnerNode',
-    method: 'get'
+    method: 'get',
+    headers: previewHeaders
   })
 }
 
-// 异常设备监控
 export function getAbnormalEquipment() {
   return request({
     url: '/home/dashboard/abnormalEquipment',
-    method: 'get'
+    method: 'get',
+    headers: previewHeaders
   })
 }

@@ -12,7 +12,8 @@ export function login(username, password, code, uuid) {
     url: '/login',
     headers: {
       isToken: false,
-      repeatSubmit: false
+      repeatSubmit: false,
+      silent: import.meta.env.DEV
     },
     method: 'post',
     data: data

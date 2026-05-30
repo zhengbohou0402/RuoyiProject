@@ -2,6 +2,10 @@ import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
 
+function canUsePreviewAuth(error) {
+  return import.meta.env.DEV && error?.response?.status === 404
+}
+
 const useUserStore = defineStore(
   'user',
   {
@@ -25,6 +29,13 @@ const useUserStore = defineStore(
             this.token = res.token
             resolve()
           }).catch(error => {
+            if (canUsePreviewAuth(error)) {
+              const token = 'local-preview-token'
+              setToken(token)
+              this.token = token
+              resolve()
+              return
+            }
             reject(error)
           })
         })
@@ -48,6 +59,19 @@ const useUserStore = defineStore(
             this.avatar = avatar
             resolve(res)
           }).catch(error => {
+            if (canUsePreviewAuth(error)) {
+              this.mockUserInfo()
+              resolve({
+                user: {
+                  userId: this.id,
+                  userName: this.name,
+                  avatar: ''
+                },
+                roles: this.roles,
+                permissions: this.permissions
+              })
+              return
+            }
             reject(error)
           })
         })
