@@ -10,42 +10,12 @@ export const devPreviewRoutes = import.meta.env.DEV ? [
     alwaysShow: true,
     meta: { title: '运营管理', icon: 'dashboard' },
     children: [
-      {
-        path: 'vm',
-        component: () => import('@/views/manage/vm/index.vue'),
-        name: 'DevPreviewVm',
-        meta: { title: '设备管理', icon: '设备管理' }
-      },
-      {
-        path: 'node',
-        component: () => import('@/views/manage/node/index.vue'),
-        name: 'DevPreviewNode',
-        meta: { title: '点位管理', icon: '点位管理' }
-      },
-      {
-        path: 'sku',
-        component: () => import('@/views/manage/sku/index.vue'),
-        name: 'DevPreviewSku',
-        meta: { title: '商品管理', icon: '商品管理' }
-      },
-      {
-        path: 'order',
-        component: () => import('@/views/manage/order/index.vue'),
-        name: 'DevPreviewOrder',
-        meta: { title: '订单管理', icon: '订单管理' }
-      },
-      {
-        path: 'task',
-        component: () => import('@/views/manage/task/index.vue'),
-        name: 'DevPreviewTask',
-        meta: { title: '工单管理', icon: '工单管理' }
-      },
-      {
-        path: 'partner',
-        component: () => import('@/views/manage/partner/index.vue'),
-        name: 'DevPreviewPartner',
-        meta: { title: '合作商管理', icon: 'peoples' }
-      }
+      { path: 'vm', component: () => import('@/views/manage/vm/index.vue'), name: 'DevPreviewVm', meta: { title: '设备管理', icon: '设备管理' } },
+      { path: 'node', component: () => import('@/views/manage/node/index.vue'), name: 'DevPreviewNode', meta: { title: '点位管理', icon: '点位管理' } },
+      { path: 'partner', component: () => import('@/views/manage/partner/index.vue'), name: 'DevPreviewPartner', meta: { title: '合作商管理', icon: 'peoples' } },
+      { path: 'order', component: () => import('@/views/manage/order/index.vue'), name: 'DevPreviewOrder', meta: { title: '订单管理', icon: '订单管理' } },
+      { path: 'task', component: () => import('@/views/manage/task/index.vue'), name: 'DevPreviewTask', meta: { title: '工单管理', icon: '工单管理' } },
+      { path: 'job', component: () => import('@/views/manage/job/index.vue'), name: 'DevPreviewJob', meta: { title: '自动补货任务', icon: 'job' } }
     ]
   },
   {
@@ -55,63 +25,32 @@ export const devPreviewRoutes = import.meta.env.DEV ? [
     alwaysShow: true,
     meta: { title: '基础资料', icon: 'component' },
     children: [
-      {
-        path: 'vmType',
-        component: () => import('@/views/manage/vmType/index.vue'),
-        name: 'DevPreviewVmType',
-        meta: { title: '设备类型', icon: 'tree-table' }
-      },
-      {
-        path: 'skuClass',
-        component: () => import('@/views/manage/skuClass/index.vue'),
-        name: 'DevPreviewSkuClass',
-        meta: { title: '商品类型', icon: 'shopping' }
-      },
-      {
-        path: 'channel',
-        component: () => import('@/views/manage/channel/index.vue'),
-        name: 'DevPreviewChannel',
-        meta: { title: '货道管理', icon: 'list' }
-      },
-      {
-        path: 'emp',
-        component: () => import('@/views/manage/emp/index.vue'),
-        name: 'DevPreviewEmp',
-        meta: { title: '人员管理', icon: 'people' }
-      }
+      { path: 'vmType', component: () => import('@/views/manage/vmType/index.vue'), name: 'DevPreviewVmType', meta: { title: '设备类型管理', icon: 'tree-table' } },
+      { path: 'sku', component: () => import('@/views/manage/sku/index.vue'), name: 'DevPreviewSku', meta: { title: '商品管理', icon: 'shopping' } },
+      { path: 'skuClass', component: () => import('@/views/manage/skuClass/index.vue'), name: 'DevPreviewSkuClass', meta: { title: '商品类型', icon: 'shopping' } },
+      { path: 'channel', component: () => import('@/views/manage/channel/index.vue'), name: 'DevPreviewChannel', meta: { title: '售货机货道', icon: 'list' } },
+      { path: 'region', component: () => import('@/views/manage/region/index.vue'), name: 'DevPreviewRegion', meta: { title: '区域管理', icon: 'tree' } },
+      { path: 'policy', component: () => import('@/views/manage/policy/index.vue'), name: 'DevPreviewPolicy', meta: { title: '策略管理', icon: 'skill' } },
+      { path: 'emp', component: () => import('@/views/manage/emp/index.vue'), name: 'DevPreviewEmp', meta: { title: '人员列表', icon: 'people' } },
+      { path: 'manageRole', component: () => import('@/views/manage/manageRole/index.vue'), name: 'DevPreviewManageRole', meta: { title: '工单角色', icon: 'peoples' } },
+      { path: 'taskType', component: () => import('@/views/manage/taskType/index.vue'), name: 'DevPreviewTaskType', meta: { title: '工单类型', icon: 'dict' } },
+      { path: 'taskDetails', component: () => import('@/views/manage/taskDetails/index.vue'), name: 'DevPreviewTaskDetails', meta: { title: '工单详情', icon: 'form' } }
     ]
   },
   {
     path: '/data',
     component: Layout,
-    redirect: '/data/realTimeData',
+    redirect: '/data/metaData',
     alwaysShow: true,
     meta: { title: '数据管理', icon: 'chart' },
     children: [
-      {
-        path: 'realTimeData',
-        component: () => import('@/views/manage/realTimeData/index.vue'),
-        name: 'DevPreviewRealTimeData',
-        meta: { title: '实时数据', icon: 'monitor' }
-      },
-      {
-        path: 'metaData',
-        component: () => import('@/views/manage/metaData/index.vue'),
-        name: 'DevPreviewMetaData',
-        meta: { title: '元数据', icon: 'dict' }
-      },
-      {
-        path: 'dataQualityConfig',
-        component: () => import('@/views/manage/dataQualityConfig/index.vue'),
-        name: 'DevPreviewDataQualityConfig',
-        meta: { title: '质量配置', icon: 'skill' }
-      },
-      {
-        path: 'behaviorLog',
-        component: () => import('@/views/manage/behaviorLog/index.vue'),
-        name: 'DevPreviewBehaviorLog',
-        meta: { title: '行为日志', icon: 'log' }
-      }
+      { path: 'metaData', component: () => import('@/views/manage/metaData/index.vue'), name: 'DevPreviewMetaData', meta: { title: '元数据管理', icon: 'dict' } },
+      { path: 'dataLevelLabel', component: () => import('@/views/manage/dataLevelLabel/index.vue'), name: 'DevPreviewDataLevelLabel', meta: { title: '数据等级标注', icon: 'tree-table' } },
+      { path: 'userBehaviorTrack', component: () => import('@/views/manage/userBehaviorTrack/index.vue'), name: 'DevPreviewUserBehaviorTrack', meta: { title: '用户行为轨迹查询', icon: 'search' } },
+      { path: 'realTimeData', component: () => import('@/views/manage/realTimeData/index.vue'), name: 'DevPreviewRealTimeData', meta: { title: '实时数据核查', icon: 'monitor' } },
+      { path: 'behaviorLog', component: () => import('@/views/manage/behaviorLog/index.vue'), name: 'DevPreviewBehaviorLog', meta: { title: '行为日志', icon: 'log' } },
+      { path: 'customizeDataManage', component: () => import('@/views/manage/customizeDataManage/index.vue'), name: 'DevPreviewCustomizeDataManage', meta: { title: '自定义数据管理', icon: 'data' } },
+      { path: 'dataQualityConfig', component: () => import('@/views/manage/dataQualityConfig/index.vue'), name: 'DevPreviewDataQualityConfig', meta: { title: '数据质量配置', icon: 'skill' } }
     ]
   }
 ] : []
@@ -160,19 +99,6 @@ export const constantRoutes = [
     path: '/register',
     component: () => import('@/views/register'),
     hidden: true
-  },
-  {
-    path: '/manage',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/manage/vm/index.vue'),
-        name: 'ManageVmLocal',
-        meta: { title: '设备管理', activeMenu: '/manage/index' }
-      }
-    ]
   },
   {
     path: '/401',

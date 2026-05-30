@@ -17,6 +17,28 @@ const service = axios.create({
   timeout: 10000
 })
 
+function getDevPreviewFallback(error) {
+  if (!import.meta.env.DEV || error?.response?.status !== 404 || !getToken()) {
+    return null
+  }
+
+  const config = error.config || {}
+  const url = config.url || ''
+  const passthroughUrls = ['/login', '/logout', '/getInfo', '/getRouters', '/captchaImage']
+
+  if (passthroughUrls.some(item => url.includes(item))) {
+    return null
+  }
+
+  return {
+    code: 200,
+    msg: 'local preview fallback',
+    rows: [],
+    total: 0,
+    data: []
+  }
+}
+
 service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
@@ -94,6 +116,11 @@ service.interceptors.response.use(res => {
 
   return Promise.resolve(res.data)
 }, error => {
+  const devPreviewFallback = getDevPreviewFallback(error)
+  if (devPreviewFallback) {
+    return Promise.resolve(devPreviewFallback)
+  }
+
   let { message } = error
   const isSilent = error.config && error.config.headers && error.config.headers.silent === true
 
