@@ -2,6 +2,10 @@ import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import defAva from '@/assets/images/profile.jpg'
 
+function canUsePreviewAuth(error) {
+  return import.meta.env.DEV && error?.response?.status === 404
+}
+
 const useUserStore = defineStore(
   'user',
   {
@@ -14,7 +18,6 @@ const useUserStore = defineStore(
       permissions: []
     }),
     actions: {
-      // 登录
       login(userInfo) {
         const username = userInfo.username.trim()
         const password = userInfo.password
@@ -26,18 +29,26 @@ const useUserStore = defineStore(
             this.token = res.token
             resolve()
           }).catch(error => {
+            if (canUsePreviewAuth(error)) {
+              const token = 'local-preview-token'
+              setToken(token)
+              this.token = token
+              resolve()
+              return
+            }
             reject(error)
           })
         })
       },
-      // 获取用户信息
       getInfo() {
         return new Promise((resolve, reject) => {
-          getInfo().then(res => {
+          getInfo(true).then(res => {
             const user = res.user
-            const avatar = (user.avatar == "" || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
+            const avatar = (user.avatar === '' || user.avatar == null)
+              ? defAva
+              : import.meta.env.VITE_APP_BASE_API + user.avatar
 
-            if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            if (res.roles && res.roles.length > 0) {
               this.roles = res.roles
               this.permissions = res.permissions
             } else {
@@ -48,21 +59,38 @@ const useUserStore = defineStore(
             this.avatar = avatar
             resolve(res)
           }).catch(error => {
+            if (canUsePreviewAuth(error)) {
+              this.mockUserInfo()
+              resolve({
+                user: {
+                  userId: this.id,
+                  userName: this.name,
+                  avatar: ''
+                },
+                roles: this.roles,
+                permissions: this.permissions
+              })
+              return
+            }
             reject(error)
           })
         })
       },
-      // 退出系统
+      mockUserInfo() {
+        this.id = 1
+        this.name = '管理员'
+        this.avatar = defAva
+        this.roles = ['admin']
+        this.permissions = ['*:*:*']
+      },
       logOut() {
-        return new Promise((resolve, reject) => {
-          logout(this.token).then(() => {
+        return new Promise((resolve) => {
+          logout(this.token).finally(() => {
             this.token = ''
             this.roles = []
             this.permissions = []
             removeToken()
             resolve()
-          }).catch(error => {
-            reject(error)
           })
         })
       }

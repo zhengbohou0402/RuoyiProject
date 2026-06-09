@@ -261,7 +261,6 @@ function generate(data) {
 function execDownload(data) {
   const codeStr = generateCode()
   const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
-  console.log(proxy.download);
   Download.saveAs(blob, data.fileName)
 }
 

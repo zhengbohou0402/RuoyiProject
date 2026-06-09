@@ -2,7 +2,7 @@
   <div class="box partner-node-collect">
     <div class="header">
       <div class="title">合作商点位数Top5</div>
-      <svg-icon name="more" class="more" @click="handleMoreClick" />
+      <svg-icon icon-class="more" class="more" @click="handleMoreClick" />
     </div>
     <el-row :gutter="20" type="flex" align="middle" class="body">
       <el-col :span="17">
@@ -11,11 +11,11 @@
       <el-col :span="7">
         <div class="collect">
           <div class="count">
-            16
+            {{ totalNodes }}
           </div>
           <div class="name">点位数</div>
           <div class="count count2">
-            5
+            {{ totalPartners }}
           </div>
           <div class="name">合作商数</div>
         </div>
@@ -24,31 +24,33 @@
   </div>
 </template>
 <script setup>
+import { ref, onMounted } from 'vue'
 import PartnerNodeCollectPieChart from './partner-node-collect-pie-chart.vue'
-// 定义变量
+import { getPartnerNode } from '@/api/manage/dashboard'
+
+const handleMoreClick = () => {
+  // 更多详情
+}
+
 const pieChartOption = ref({
-  seriesData: [
-    {
-      name: '金燕龙合作商',
-      value: 10,
-    },
-    {
-      name: '天华物业',
-      value: 2,
-    },
-    {
-      name: '北京合作商',
-      value: 2,
-    },
-    {
-      name: 'likede',
-      value: 1,
-    },
-    {
-      name: '佳佳',
-      value: 1,
-    },
-  ],
+  seriesData: [],
+});
+const totalNodes = ref(0);
+const totalPartners = ref(0);
+
+function loadPartnerNode() {
+  getPartnerNode().then(response => {
+    const data = response.data || {};
+    if (data.pieChartOption) {
+      pieChartOption.value = data.pieChartOption;
+    }
+    totalNodes.value = data.nodeCount || 0;
+    totalPartners.value = data.partnerCount || 0;
+  }).catch(() => {})
+}
+
+onMounted(() => {
+  loadPartnerNode();
 });
 </script>
 <style scoped>

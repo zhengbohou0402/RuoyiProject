@@ -12,7 +12,8 @@ export function login(username, password, code, uuid) {
     url: '/login',
     headers: {
       isToken: false,
-      repeatSubmit: false
+      repeatSubmit: false,
+      silent: import.meta.env.DEV
     },
     method: 'post',
     data: data
@@ -32,10 +33,11 @@ export function register(data) {
 }
 
 // 获取用户详细信息
-export function getInfo() {
+export function getInfo(silent = false) {
   return request({
     url: '/getInfo',
-    method: 'get'
+    method: 'get',
+    headers: { silent }
   })
 }
 
@@ -52,7 +54,8 @@ export function getCodeImg() {
   return request({
     url: '/captchaImage',
     headers: {
-      isToken: false
+      isToken: false,
+      silent: true
     },
     method: 'get',
     timeout: 20000

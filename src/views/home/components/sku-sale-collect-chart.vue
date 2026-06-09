@@ -23,46 +23,58 @@
   </div>
 </template>
 <script setup>
-import * as echarts from 'echarts';
 import { onMounted } from 'vue';
 import dayjs from 'dayjs';
 import CommonWeekMonthYear from '@/components/week-month-year/index.vue';
 import SkuSaleCollectLineChart from './sku-sale-collect-line-chart.vue';
 import SkuSaleCollectBarChart from './sku-sale-collect-bar-chart.vue';
-// 定义变量
-const datePickerSel = ref([]);
+import { getSaleCollect } from '@/api/manage/dashboard'
+
 const datePickerFormat = ref([]);
 const radioGroupSel = ref('week');
-const userTaskStatus = ref([]);
 const lineChartOption = ref({
-  xAxisData: [
-      "2024-05-13",
-      "2024-05-14",
-      "2024-05-15",
-      "2024-05-16"
-  ],
-  seriesData: [5,10,12,15],
+  xAxisData: [],
+  seriesData: [],
   yAxisName: '单位：元',
 });
-const collectType = ref(1); // 统计时间类型，1:按日统计，2:按月统计
 const barChartOption = ref({
-  xAxisData: ["北京平西府街道", "霍营街道"],
-  seriesData: [866,523],
+  xAxisData: [],
+  seriesData: [],
   yAxisName: '单位：元',
 });
-onMounted(()=>{
-    handleRadioGroupSelChange(radioGroupSel.value)
-})
-//
+
+function loadSaleCollect() {
+  const startTime = dayjs().startOf(radioGroupSel.value).format('YYYY-MM-DD HH:mm:ss');
+  const endTime = dayjs().endOf('day').format('YYYY-MM-DD HH:mm:ss');
+  getSaleCollect({ startTime, endTime }).then(response => {
+    const data = response.data || {};
+    if (data.lineChartOption) {
+      lineChartOption.value = {
+        xAxisData: data.lineChartOption.xAxisData || [],
+        seriesData: data.lineChartOption.seriesData || [],
+        yAxisName: '单位：元'
+      };
+    }
+    if (data.barChartOption) {
+      barChartOption.value = {
+        xAxisData: data.barChartOption.xAxisData || [],
+        seriesData: data.barChartOption.seriesData || [],
+        yAxisName: '单位：元'
+      };
+    }
+  }).catch(() => {})
+}
+
+onMounted(() => {
+  handleRadioGroupSelChange(radioGroupSel.value);
+});
+
 const handleRadioGroupSelChange = (radioGroup) => {
   radioGroupSel.value = radioGroup;
-  const startFormat = dayjs()
-      .startOf(radioGroupSel.value)
-      .format('YYYY.MM.DD')
-    const endFormat = dayjs()
-      .endOf('day')
-      .format('YYYY.MM.DD')
-    datePickerFormat.value = [startFormat, endFormat]
+  const startFormat = dayjs().startOf(radioGroupSel.value).format('YYYY.MM.DD');
+  const endFormat = dayjs().endOf('day').format('YYYY.MM.DD');
+  datePickerFormat.value = [startFormat, endFormat];
+  loadSaleCollect();
 };
 </script>
 <style lang="scss" scoped>

@@ -148,7 +148,6 @@ function buildRules(conf, ruleList) {
     if (conf.regList && Array.isArray(conf.regList)) {
       conf.regList.forEach((item) => {
         if (item.pattern) {
-          console.log(item.pattern);
           rules.push(
             `{ pattern: new RegExp(${item.pattern}), message: '${
               item.message
@@ -275,7 +274,6 @@ function buildexport(
   props,
   methods
 ) {
-  console.log('props', props)
   let str = `
     import { ElMessage } from 'element-plus'
     const ${conf.formRef} = ref()
