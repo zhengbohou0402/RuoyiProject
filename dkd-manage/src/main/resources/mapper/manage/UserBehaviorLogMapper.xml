@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dkd.manage.mapper.UserBehaviorLogMapper">
+    
+    <resultMap type="com.dkd.manage.domain.UserBehaviorLog" id="UserBehaviorLogResult">
+        <result property="id"    column="id"    />
+        <result property="userMobile"    column="user_mobile"    />
+        <result property="eventKey"    column="event_key"    />
+        <result property="clientTime"    column="client_time"    />
+        <result property="eventType"    column="event_type"    />
+        <result property="eventTime"    column="event_time"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="platform"    column="platform"    />
+        <result property="browser"    column="browser"    />
+        <result property="clientVersion"    column="client_version"    />
+        <result property="domain"    column="domain"    />
+        <result property="ip"    column="ip"    />
+        <result property="userAgent"    column="user_agent"    />
+        <result property="sdkVersion"    column="sdk_version"    />
+        <result property="dataSourceId"    column="data_source_id"    />
+        <result property="attributes"    column="attributes"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectUserBehaviorLogVo">
+        select id, user_mobile, event_key, client_time, event_type, event_time, device_id, 
+               session_id, platform, browser, client_version, domain, ip, user_agent, 
+               sdk_version, data_source_id, attributes, create_time 
+        from tb_real_time_data_verification
+    </sql>
+
+    <select id="selectUserBehaviorLogList" parameterType="com.dkd.manage.domain.UserBehaviorLog" resultMap="UserBehaviorLogResult">
+        <include refid="selectUserBehaviorLogVo"/>
+        <where>  
+            <if test="userMobile != null  and userMobile != ''"> and user_mobile = #{userMobile}</if>
+            <if test="eventKey != null  and eventKey != ''"> and event_key = #{eventKey}</if>
+            <if test="eventType != null  and eventType != ''"> and event_type = #{eventType}</if>
+            <if test="eventTime != null "> and event_time = #{eventTime}</if>
+        </where>
+        order by event_time desc
+    </select>
+    
+    <select id="selectUserBehaviorLogById" parameterType="Long" resultMap="UserBehaviorLogResult">
+        <include refid="selectUserBehaviorLogVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectIncrementalDataByMobile" resultMap="UserBehaviorLogResult">
+        <include refid="selectUserBehaviorLogVo"/>
+        where user_mobile = #{userMobile}
+        <if test="queryTime != null">
+            and event_time > #{queryTime}
+        </if>
+        order by event_time desc
+        limit 200
+    </select>
+
+    <!-- 
+        查询最大的event_time，用于下次增量查询的时间基准
+        
+        【COALESCE三级降级策略】
+        1. 优先返回max(event_time)：有新数据时返回最大时间，确保下次能接上
+        2. 其次返回queryTime：无新数据时保持原时间不变，避免时间跳跃
+        3. 最后返回now(3)：首次查询时用当前时间作为基准
+        
+        【核心优势】防止数据延迟入库导致的漏查问题
+        示例：event_time=12:00:25的数据在19:49:00才入库
+              使用max(event_time)能查到，使用系统时间会漏掉
+     -->
+    <select id="selectMaxEventTime" resultType="java.util.Date">
+        select COALESCE(
+            (select max(event_time) 
+             from tb_real_time_data_verification 
+             where user_mobile = #{userMobile}
+             <if test="queryTime != null">
+                 and event_time > #{queryTime}
+             </if>),
+            <if test="queryTime != null">
+                #{queryTime}
+            </if>
+            <if test="queryTime == null">
+                now(3)
+            </if>
+        ) as maxEventTime
+    </select>
+        
+    <insert id="insertUserBehaviorLog" parameterType="com.dkd.manage.domain.UserBehaviorLog" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_real_time_data_verification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userMobile != null and userMobile != ''">user_mobile,</if>
+            <if test="eventKey != null">event_key,</if>
+            <if test="clientTime != null">client_time,</if>
+            <if test="eventType != null">event_type,</if>
+            <if test="eventTime != null">event_time,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="platform != null">platform,</if>
+            <if test="browser != null">browser,</if>
+            <if test="clientVersion != null">client_version,</if>
+            <if test="domain != null">domain,</if>
+            <if test="ip != null">ip,</if>
+            <if test="userAgent != null">user_agent,</if>
+            <if test="sdkVersion != null">sdk_version,</if>
+            <if test="dataSourceId != null">data_source_id,</if>
+            <if test="attributes != null">attributes,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userMobile != null and userMobile != ''">#{userMobile},</if>
+            <if test="eventKey != null">#{eventKey},</if>
+            <if test="clientTime != null">#{clientTime},</if>
+            <if test="eventType != null">#{eventType},</if>
+            <if test="eventTime != null">#{eventTime},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="platform != null">#{platform},</if>
+            <if test="browser != null">#{browser},</if>
+            <if test="clientVersion != null">#{clientVersion},</if>
+            <if test="domain != null">#{domain},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+            <if test="sdkVersion != null">#{sdkVersion},</if>
+            <if test="dataSourceId != null">#{dataSourceId},</if>
+            <if test="attributes != null">#{attributes},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserBehaviorLog" parameterType="com.dkd.manage.domain.UserBehaviorLog">
+        update tb_real_time_data_verification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userMobile != null and userMobile != ''">user_mobile = #{userMobile},</if>
+            <if test="eventKey != null">event_key = #{eventKey},</if>
+            <if test="clientTime != null">client_time = #{clientTime},</if>
+            <if test="eventType != null">event_type = #{eventType},</if>
+            <if test="eventTime != null">event_time = #{eventTime},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="platform != null">platform = #{platform},</if>
+            <if test="browser != null">browser = #{browser},</if>
+            <if test="clientVersion != null">client_version = #{clientVersion},</if>
+            <if test="domain != null">domain = #{domain},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+            <if test="sdkVersion != null">sdk_version = #{sdkVersion},</if>
+            <if test="dataSourceId != null">data_source_id = #{dataSourceId},</if>
+            <if test="attributes != null">attributes = #{attributes},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserBehaviorLogById" parameterType="Long">
+        delete from tb_real_time_data_verification where id = #{id}
+    </delete>
+
+    <delete id="deleteUserBehaviorLogByIds" parameterType="String">
+        delete from tb_real_time_data_verification where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

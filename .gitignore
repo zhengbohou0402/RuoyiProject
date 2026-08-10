@@ -42,9 +42,6 @@ nbdist/
 *.xml.versionsBackup
 *.swp
 
-docker/nacos/data/
-docker/nacos/logs/
-
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml

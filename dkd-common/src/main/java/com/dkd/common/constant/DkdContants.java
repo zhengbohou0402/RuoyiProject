@@ -1,7 +1,7 @@
 package com.dkd.common.constant;
 
 /**
- * 帝可得业务常量
+ * 插码管理平台业务常量
  */
 public class DkdContants {
 

@@ -698,3 +698,19 @@ create table gen_table_column (
   update_time       datetime                                   comment '更新时间',
   primary key (column_id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+
+-- ----------------------------
+-- 21、数据等级标注表
+-- ----------------------------
+drop table if exists tb_data_level_label;
+create table tb_data_level_label (
+  id                bigint(20)      not null auto_increment    comment '主键',
+  channel_id        varchar(64)     not null                   comment '渠道ID (关联键)',
+  event_code        varchar(64)     not null                   comment '事件编码 (关联键)',
+  data_level        varchar(20)     not null                   comment '数据等级 (CORE, IMPORTANT)',
+  create_by         varchar(64)     default ''                 comment '创建者',
+  create_time       datetime                                   comment '创建时间',
+  update_by         varchar(64)     default ''                 comment '更新者',
+  update_time       datetime                                   comment '更新时间',
+  primary key (id)
+) engine=innodb comment = '数据等级标注表';

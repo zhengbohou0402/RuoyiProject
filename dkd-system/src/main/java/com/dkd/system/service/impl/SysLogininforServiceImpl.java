@@ -1,8 +1,6 @@
 package com.dkd.system.service.impl;
 
-import com.dkd.common.annotation.Log;
-import com.dkd.common.core.domain.AjaxResult;
-import com.dkd.common.enums.BusinessType;
+import com.dkd.common.annotation.DataScope;
 import com.dkd.system.domain.SysLogininfor;
 import com.dkd.system.mapper.SysLogininforMapper;
 import com.dkd.system.service.ISysLogininforService;
@@ -42,6 +40,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @param logininfor 访问日志对象
      * @return 登录记录集合
      */
+    @DataScope(deptAlias = "d", userAlias = "u")
     @Override
     public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
     {

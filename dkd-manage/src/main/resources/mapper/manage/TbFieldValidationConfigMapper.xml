@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dkd.manage.mapper.TbFieldValidationConfigMapper">
+
+    <!-- 字段校验规则配置结果映射 -->
+    <resultMap type="com.dkd.manage.domain.TbFieldValidationConfig" id="TbFieldValidationConfigResult">
+        <result property="id" column="id" />
+        <result property="datasourceId" column="datasource_id" />
+        <result property="tableName" column="table_name" />
+        <result property="sampleCount" column="sample_count" />
+        <result property="fieldIdentification" column="field_identification" />
+        <result property="fieldName" column="field_name" />
+        <result property="isNotNull" column="is_not_null" />
+        <result property="isEncrypted" column="is_encrypted" />
+        <result property="formatValidationType" column="format_validation_type" />
+        <result property="dateFormat" column="date_format" />
+        <result property="urlProtocol" column="url_protocol" />
+        <result property="isContentNumber" column="is_content_number" />
+        <result property="isContentChinese" column="is_content_chinese" />
+        <result property="isContentLowercase" column="is_content_lowercase" />
+        <result property="isContentUppercase" column="is_content_uppercase" />
+        <result property="customRegex" column="custom_regex" />
+        <result property="lengthMin" column="length_min" />
+        <result property="lengthMax" column="length_max" />
+        <result property="enumValues" column="enum_values" />
+        <result property="isEnabled" column="is_enabled" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <!-- 基础查询字段片段 -->
+    <sql id="selectTbFieldValidationConfigVo">
+        select id, datasource_id, table_name, sample_count, field_identification, field_name,
+               is_not_null, is_encrypted, format_validation_type, date_format, url_protocol, is_content_number, is_content_chinese,
+               is_content_lowercase, is_content_uppercase, custom_regex, length_min, length_max, enum_values,
+               is_enabled, create_by, create_time, update_by, update_time
+        from tb_field_validation_config
+    </sql>
+
+    <!-- 查询字段校验规则配置列表 -->
+    <select id="selectTbFieldValidationConfigList" parameterType="TbFieldValidationConfig" resultMap="TbFieldValidationConfigResult">
+        <include refid="selectTbFieldValidationConfigVo"/>
+        <where>
+            <if test="datasourceId != null and datasourceId != ''"> and datasource_id = #{datasourceId}</if>
+            <if test="fieldIdentification != null and fieldIdentification != ''"> and field_identification like concat('%', #{fieldIdentification}, '%')</if>
+            <if test="isEnabled != null"> and is_enabled = #{isEnabled}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <!-- 根据ID查询字段校验规则配置 -->
+    <select id="selectTbFieldValidationConfigById" parameterType="Long" resultMap="TbFieldValidationConfigResult">
+        <include refid="selectTbFieldValidationConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <!-- 根据数据源ID和字段标识查询配置（已废弃） -->
+    <select id="selectByDatasourceAndField" resultMap="TbFieldValidationConfigResult">
+        <include refid="selectTbFieldValidationConfigVo"/>
+        where datasource_id = #{datasourceId} and field_identification = #{fieldIdentification}
+    </select>
+
+    <!-- 根据字段标识查询配置 -->
+    <select id="selectByFieldIdentification" resultMap="TbFieldValidationConfigResult">
+        <include refid="selectTbFieldValidationConfigVo"/>
+        where field_identification = #{fieldIdentification}
+    </select>
+
+    <!-- 新增字段校验规则配置 -->
+    <insert id="insertTbFieldValidationConfig" parameterType="TbFieldValidationConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_field_validation_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null and datasourceId != ''">datasource_id,</if>
+            <if test="tableName != null and tableName != ''">table_name,</if>
+            <if test="sampleCount != null">sample_count,</if>
+            <if test="fieldIdentification != null and fieldIdentification != ''">field_identification,</if>
+            <if test="fieldName != null and fieldName != ''">field_name,</if>
+            <if test="isNotNull != null">is_not_null,</if>
+            <if test="isEncrypted != null">is_encrypted,</if>
+            <if test="formatValidationType != null and formatValidationType != ''">format_validation_type,</if>
+            <if test="dateFormat != null and dateFormat != ''">date_format,</if>
+            <if test="urlProtocol != null and urlProtocol != ''">url_protocol,</if>
+            <if test="isContentNumber != null">is_content_number,</if>
+            <if test="isContentChinese != null">is_content_chinese,</if>
+            <if test="isContentLowercase != null">is_content_lowercase,</if>
+            <if test="isContentUppercase != null">is_content_uppercase,</if>
+            <if test="customRegex != null and customRegex != ''">custom_regex,</if>
+            <if test="lengthMin != null">length_min,</if>
+            <if test="lengthMax != null">length_max,</if>
+            <if test="enumValues != null and enumValues != ''">enum_values,</if>
+            <if test="isEnabled != null">is_enabled,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null and datasourceId != ''">#{datasourceId},</if>
+            <if test="tableName != null and tableName != ''">#{tableName},</if>
+            <if test="sampleCount != null">#{sampleCount},</if>
+            <if test="fieldIdentification != null and fieldIdentification != ''">#{fieldIdentification},</if>
+            <if test="fieldName != null and fieldName != ''">#{fieldName},</if>
+            <if test="isNotNull != null">#{isNotNull},</if>
+            <if test="isEncrypted != null">#{isEncrypted},</if>
+            <if test="formatValidationType != null and formatValidationType != ''">#{formatValidationType},</if>
+            <if test="dateFormat != null and dateFormat != ''">#{dateFormat},</if>
+            <if test="urlProtocol != null and urlProtocol != ''">#{urlProtocol},</if>
+            <if test="isContentNumber != null">#{isContentNumber},</if>
+            <if test="isContentChinese != null">#{isContentChinese},</if>
+            <if test="isContentLowercase != null">#{isContentLowercase},</if>
+            <if test="isContentUppercase != null">#{isContentUppercase},</if>
+            <if test="customRegex != null and customRegex != ''">#{customRegex},</if>
+            <if test="lengthMin != null">#{lengthMin},</if>
+            <if test="lengthMax != null">#{lengthMax},</if>
+            <if test="enumValues != null and enumValues != ''">#{enumValues},</if>
+            <if test="isEnabled != null">#{isEnabled},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <!-- 修改字段校验规则配置 -->
+    <update id="updateTbFieldValidationConfig" parameterType="TbFieldValidationConfig">
+        update tb_field_validation_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tableName != null and tableName != ''">table_name = #{tableName},</if>
+            <if test="sampleCount != null">sample_count = #{sampleCount},</if>
+            <if test="fieldName != null and fieldName != ''">field_name = #{fieldName},</if>
+            <if test="isNotNull != null">is_not_null = #{isNotNull},</if>
+            <if test="isEncrypted != null">is_encrypted = #{isEncrypted},</if>
+            <if test="formatValidationType != null and formatValidationType != ''">format_validation_type = #{formatValidationType},</if>
+            <if test="dateFormat != null and dateFormat != ''">date_format = #{dateFormat},</if>
+            <if test="urlProtocol != null and urlProtocol != ''">url_protocol = #{urlProtocol},</if>
+            <if test="isContentNumber != null">is_content_number = #{isContentNumber},</if>
+            <if test="isContentChinese != null">is_content_chinese = #{isContentChinese},</if>
+            <if test="isContentLowercase != null">is_content_lowercase = #{isContentLowercase},</if>
+            <if test="isContentUppercase != null">is_content_uppercase = #{isContentUppercase},</if>
+            <if test="customRegex != null and customRegex != ''">custom_regex = #{customRegex},</if>
+            <if test="lengthMin != null">length_min = #{lengthMin},</if>
+            <if test="lengthMax != null">length_max = #{lengthMax},</if>
+            <if test="enumValues != null and enumValues != ''">enum_values = #{enumValues},</if>
+            <if test="isEnabled != null">is_enabled = #{isEnabled},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!-- 删除字段校验规则配置 -->
+    <delete id="deleteTbFieldValidationConfigById" parameterType="Long">
+        delete from tb_field_validation_config where id = #{id}
+    </delete>
+
+    <!-- 批量删除字段校验规则配置 -->
+    <delete id="deleteTbFieldValidationConfigByIds" parameterType="String">
+        delete from tb_field_validation_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

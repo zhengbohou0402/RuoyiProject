@@ -114,6 +114,7 @@ public class MyBatisConfig
     }
 
     @Bean
+    @org.springframework.context.annotation.Primary
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception
     {
         String typeAliasesPackage = env.getProperty("mybatis.typeAliasesPackage");
@@ -127,6 +128,23 @@ public class MyBatisConfig
         sessionFactory.setTypeAliasesPackage(typeAliasesPackage);
         sessionFactory.setMapperLocations(resolveMapperLocations(StringUtils.split(mapperLocations, ",")));
         sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(configLocation));
+        return sessionFactory.getObject();
+    }
+
+    /**
+     * ClickHouse 数据源的独立 SqlSessionFactory（自定义规则统计任务使用）。
+     * 只加载 easydata 相关的 mapper，避免与主库的 mapper 冲突。
+     */
+    @Bean(name = "clickHouseSqlSessionFactory")
+    public SqlSessionFactory clickHouseSqlSessionFactory(
+            @org.springframework.beans.factory.annotation.Qualifier("clickhouseDataSource") DataSource clickhouseDataSource) throws Exception
+    {
+        VFS.addImplClass(SpringBootVFS.class);
+        final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+        sessionFactory.setDataSource(clickhouseDataSource);
+        sessionFactory.setTypeAliasesPackage("com.dkd.manage.domain.vo,com.dkd.manage.domain.dto");
+        sessionFactory.setMapperLocations(resolveMapperLocations(new String[]{"classpath*:mapper/manage/TbEasydataUserTrackinfoCompleteAllMapper.xml"}));
+        sessionFactory.setConfigLocation(new DefaultResourceLoader().getResource(env.getProperty("mybatis.configLocation")));
         return sessionFactory.getObject();
     }
 }
