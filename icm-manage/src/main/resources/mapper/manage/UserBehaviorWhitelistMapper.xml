@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icm.manage.mapper.UserBehaviorWhitelistMapper">
+
+    <!--
+      白名单表：默认使用 tb_user_behavior_whitelist
+      字段：phone(手机号)
+      如你们实际表名/字段不同，只需改这里即可
+    -->
+
+
+    <select id="countByPhone"
+            parameterType="String"
+            resultType="int">
+        select count(1)
+        from sys_white_mobile
+        where is_delete = '0'
+        and mobile_status = '0'
+        <if test="phone != null and phone != ''">
+            and mobile = #{phone}
+        </if>
+    </select>
+
+</mapper>
+
+

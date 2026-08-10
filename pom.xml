@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dkd</groupId>
-    <artifactId>dkd-parent</artifactId>
+    <groupId>com.icm</groupId>
+    <artifactId>icm-parent</artifactId>
     <version>3.8.7</version>
 
-    <name>dkd-parent</name>
+    <name>icm-parent</name>
     <url>http://www.ruoyi.vip</url>
     <description>插码管理平台</description>
 
     <properties>
-        <dkd.version>3.8.7</dkd.version>
+        <icm.version>3.8.7</icm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
@@ -146,65 +146,65 @@
 
             <!-- 定时任务-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-quartz</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-quartz</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-generator</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-generator</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-framework</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-framework</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-system</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-system</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-common</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-common</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!--  帝可得管理-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-manage</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-manage</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
             <!-- WebSocket长连接模块-->
             <dependency>
-                <groupId>com.dkd</groupId>
-                <artifactId>dkd-websocket</artifactId>
-                <version>${dkd.version}</version>
+                <groupId>com.icm</groupId>
+                <artifactId>icm-websocket</artifactId>
+                <version>${icm.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>dkd-admin</module>
-        <module>dkd-framework</module>
-        <module>dkd-system</module>
-        <module>dkd-quartz</module>
-        <module>dkd-generator</module>
-        <module>dkd-common</module>
-        <module>dkd-manage</module>
-        <module>dkd-websocket</module>
+        <module>icm-admin</module>
+        <module>icm-framework</module>
+        <module>icm-system</module>
+        <module>icm-quartz</module>
+        <module>icm-generator</module>
+        <module>icm-common</module>
+        <module>icm-manage</module>
+        <module>icm-websocket</module>
     </modules>
     <packaging>pom</packaging>
 

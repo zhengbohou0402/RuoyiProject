@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icm.manage.mapper.TbCustomizeDataManageInfoMapper">
+
+    <resultMap type="TbCustomizeDataManageInfo" id="TbCustomizeDataManageInfoResult">
+        <result property="id" column="id"/>
+        <result property="ruleName" column="rule_name"/>
+        <result property="ruleDesc" column="rule_desc"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="checkField" column="check_field"/>
+        <result property="dataSourceId" column="data_source_id"/>
+        <result property="eventType" column="event_type"/>
+        <result property="marketCode" column="market_code"/>
+        <result property="pageUrl" column="page_url"/>
+        <result property="statisticsTimeStart" column="statistics_time_start"/>
+        <result property="statisticsTimeEnd" column="statistics_time_end"/>
+        <result property="compareTimeStart" column="compare_time_start"/>
+        <result property="compareTimeEnd" column="compare_time_end"/>
+        <result property="status" column="status"/>
+        <result property="statistics_content" column="statistics_content"/>
+        <result property="consume_time" column="consume_time"/>
+        <result property="create_by" column="create_by"/>
+        <result property="update_by" column="update_by"/>
+        <result property="query_start_time" column="query_start_time"/>
+        <result property="query_end_time" column="query_end_time"/>
+        <result property="taskId" column="task_id"/>
+        <result property="error_msg" column="error_msg"/>
+    </resultMap>
+
+    <sql id="selectTbCustomizeDataManageInfoVo">
+        select
+            id,
+            rule_name,
+            rule_desc,
+            creator,
+            create_time,
+            update_time,
+            check_field,
+            data_source_id,
+            event_type,
+            market_code,
+            page_url,
+            statistics_time_start,
+            statistics_time_end,
+            compare_time_start,
+            compare_time_end,
+            status,
+            create_by,
+            update_by,
+            consume_time,
+            statistics_content,
+            query_start_time,
+            query_end_time,
+            task_id,
+            error_msg
+        from tb_customize_data_manage_info
+    </sql>
+
+    <select id="selectTbCustomizeDataManageInfoList" parameterType="TbCustomizeDataManageInfo"
+            resultMap="TbCustomizeDataManageInfoResult">
+        <include refid="selectTbCustomizeDataManageInfoVo"/>
+        <where>
+            <if test="ruleName != null and ruleName != ''">
+                and rule_name like concat('%', #{ruleName}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectTbCustomizeDataManageInfoById" parameterType="Long"
+            resultMap="TbCustomizeDataManageInfoResult">
+        <include refid="selectTbCustomizeDataManageInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTbCustomizeDataManageInfo" parameterType="TbCustomizeDataManageInfo"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into tb_customize_data_manage_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleName != null">rule_name,</if>
+            <if test="ruleDesc != null">rule_desc,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="checkField != null">check_field,</if>
+            <if test="dataSourceId != null">data_source_id,</if>
+            <if test="eventType != null">event_type,</if>
+            <if test="marketCode != null">market_code,</if>
+            <if test="pageUrl != null">page_url,</if>
+            <if test="statisticsTimeStart != null">statistics_time_start,</if>
+            <if test="statisticsTimeEnd != null">statistics_time_end,</if>
+            <if test="compareTimeStart != null">compare_time_start,</if>
+            <if test="compareTimeEnd != null">compare_time_end,</if>
+            <if test="status != null">status,</if>
+            <if test="create_by != null">create_by,</if>
+            <if test="update_by != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleName != null">#{ruleName},</if>
+            <if test="ruleDesc != null">#{ruleDesc},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="checkField != null">#{checkField},</if>
+            <if test="dataSourceId != null">#{dataSourceId},</if>
+            <if test="eventType != null">#{eventType},</if>
+            <if test="marketCode != null">#{marketCode},</if>
+            <if test="pageUrl != null">#{pageUrl},</if>
+            <if test="statisticsTimeStart != null">#{statisticsTimeStart},</if>
+            <if test="statisticsTimeEnd != null">#{statisticsTimeEnd},</if>
+            <if test="compareTimeStart != null">#{compareTimeStart},</if>
+            <if test="compareTimeEnd != null">#{compareTimeEnd},</if>
+            <if test="status != null">#{status},</if>
+            <if test="create_by != null">#{create_by},</if>
+            <if test="update_by != null">#{update_by},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTbCustomizeDataManageInfo" parameterType="TbCustomizeDataManageInfo">
+        update tb_customize_data_manage_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ruleName != null">rule_name = #{ruleName},</if>
+            <if test="ruleDesc != null">rule_desc = #{ruleDesc},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="checkField != null">check_field = #{checkField},</if>
+            <if test="dataSourceId != null">data_source_id = #{dataSourceId},</if>
+            <if test="eventType != null">event_type = #{eventType},</if>
+            <if test="marketCode != null">market_code = #{marketCode},</if>
+            <if test="query_start_time != null">query_start_time = #{query_start_time},</if>
+            <if test="query_end_time != null">query_end_time = #{query_end_time},</if>
+            <if test="consume_time != null">consume_time = #{consume_time},</if>
+            <if test="pageUrl != null">page_url = #{pageUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="statistics_content != null">statistics_content = #{statistics_content},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="error_msg != null">error_msg = #{error_msg},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateTbCustomizeDataStatus">
+        update tb_customize_data_manage_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{statusNew},</if>
+            <if test="queryStartTime != null">query_start_time = #{queryStartTime},</if>
+            <if test="queryStopTime != null">query_stop_time = #{queryStopTime},</if>
+            <if test="consumeTime != null">consume_time = #{consumeTime},</if>
+            <if test="status != null">status = #{statusNew},</if>
+        </trim>
+        where id = #{id} and status = #{statusOld}
+    </update>
+
+    <delete id="deleteTbCustomizeDataManageInfoById" parameterType="Long">
+        delete from tb_customize_data_manage_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTbCustomizeDataManageInfoByIds" parameterType="String">
+        delete from tb_customize_data_manage_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

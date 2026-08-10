@@ -24,10 +24,10 @@ Local credentials are `nacos` / `nacos`.
 
 The script publishes:
 
-- `dkd-admin.yaml`
-- `dkd-admin-druid.yaml`
+- `icm-admin.yaml`
+- `icm-admin-druid.yaml`
 
-The backend loads these through `spring.application.name=dkd-admin` and `spring.profiles.active=druid`.
+The backend loads these through `spring.application.name=icm-admin` and `spring.profiles.active=druid`.
 
 ## Runtime variables
 
