@@ -35,6 +35,9 @@ server:
 logging:
   level:
     com.dkd: debug
+    com.clickhouse: debug
+    org.mybatis: debug
+    org.springframework.jdbc: debug
     org.springframework: warn
 
 # 用户配置
@@ -64,7 +67,7 @@ spring:
   devtools:
     restart:
       # 热部署开关
-      enabled: false
+      enabled: true
   # redis 配置
   redis:
     # 地址
@@ -74,7 +77,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
-    password: ${REDIS_PASSWORD:}
+    password:
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -93,7 +96,7 @@ token:
   # 令牌自定义标识
   header: Authorization
   # 令牌密钥
-  secret: ${TOKEN_SECRET:change-this-token-secret}
+  secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
   expireTime: 300
 
@@ -107,6 +110,16 @@ mybatis:
   configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
+# 面试踩坑点：helperDialect 写死了 mysql，PageHelper 并没有 ClickHouse 方言。
+# 对 ClickHouse 表做 COUNT 重写/LIMIT 拼接时，全程套的是 MySQL 语法规则，
+# 且底层用 JSqlParser 解析 SQL，遇到 ClickHouse 专属语法（如 PREWHERE）会解析不了。
+# 另外：只要 Mapper.xml 里手写了 ORDER BY，再叠加 RuoYi 通用分页 startPage()
+# （前端表头排序会带 orderByColumn/isAsc），PageHelper.startPage(pageNum,pageSize,orderBy)
+# 这个三参数重载只会在 SQL 末尾再拼一次 " order by xxx"，不会替换已有 ORDER BY，
+# 于是生成双 ORDER BY 语句，SQL 语法报错。
+# 复现代码见：UserBehaviorTrackServiceImpl#demoPageHelperOrderByBug
+#            UserBehaviorTrackController#demoPageHelperBug
+# 最终方案：ClickHouse 查询绕开 PageHelper，全量查询后走 Redis/Caffeine 缓存 + List.subList 内存分页
 pagehelper:
   helperDialect: mysql
   supportMethodsArguments: true
@@ -115,7 +128,7 @@ pagehelper:
 # Swagger配置
 swagger:
   # 是否开启swagger
-  enabled: ${SWAGGER_ENABLED:false}
+  enabled: true
   # 请求前缀
   pathMapping: /dev-api
 
@@ -135,12 +148,10 @@ dromara:
     #对应平台的配置写在这里，注意缩进要对齐
     aliyun-oss:
       - platform: aliyun-oss-1 # 存储平台标识
-        enable-storage: ${ALIYUN_OSS_ENABLE:false}  # 启用存储
+        enable-storage: true  # 启用存储
         access-key: ${ALIYUN_OSS_ACCESS_KEY:}
         secret-key: ${ALIYUN_OSS_SECRET_KEY:}
-        end-point: ${ALIYUN_OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}
-        bucket-name: ${ALIYUN_OSS_BUCKET:dkd-itheima}
-        domain: ${ALIYUN_OSS_DOMAIN:https://dkd-itheima.oss-cn-beijing.aliyuncs.com/} # 访问域名，注意“/”结尾，例如：https://abc.oss-cn-shanghai.aliyuncs.com/
-        base-path: ${ALIYUN_OSS_BASE_PATH:dkd-images/} # 基础路径
-
-
+        end-point: oss-cn-beijing.aliyuncs.com
+        bucket-name: dkd-itheima
+        domain: https://dkd-itheima.oss-cn-beijing.aliyuncs.com/ # 访问域名，注意“/”结尾，例如：https://abc.oss-cn-shanghai.aliyuncs.com/
+        base-path: dkd-images/ # 基础路径

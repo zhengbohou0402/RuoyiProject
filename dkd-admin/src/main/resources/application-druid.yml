@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: "jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:dkd}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=false"
-                username: ${MYSQL_USERNAME:root}
-                password: ${MYSQL_PASSWORD:}
+                url: jdbc:mysql://localhost:3306/dkd?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&allowMultiQueries=true
+                username: root
+                password:
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -16,6 +16,15 @@ spring:
                 url:
                 username:
                 password:
+            # ClickHouse 数据源（用于用户行为轨迹查询）
+            clickhouse:
+                # ClickHouse 数据源开关/默认关闭
+                enabled: true
+                # 示例：jdbc:clickhouse://127.0.0.1:8123/behavior_db
+                url: jdbc:clickhouse://localhost:8123/default?ssl=false&compress=0
+                username: default
+                password: "123456"  # 本地测试环境默认密码
+                driverClassName: com.clickhouse.jdbc.ClickHouseDriver
             # 初始连接数
             initialSize: 5
             # 最小连接池数量
@@ -35,20 +44,21 @@ spring:
             # 配置一个连接在池中最大生存的时间，单位是毫秒
             maxEvictableIdleTimeMillis: 900000
             # 配置检测连接是否有效
-            validationQuery: SELECT 1 FROM DUAL
+            # MySQL 与 ClickHouse 通用
+            validationQuery: SELECT 1
             testWhileIdle: true
             testOnBorrow: false
             testOnReturn: false
             webStatFilter:
-                enabled: ${DRUID_STAT_ENABLED:false}
+                enabled: true
             statViewServlet:
-                enabled: ${DRUID_STAT_ENABLED:false}
+                enabled: true
                 # 设置白名单，不填则允许所有访问
-                allow: ${DRUID_STAT_ALLOW:127.0.0.1}
+                allow:
                 url-pattern: /druid/*
                 # 控制台管理用户名和密码
-                login-username: ${DRUID_STAT_USERNAME:ruoyi}
-                login-password: ${DRUID_STAT_PASSWORD:change-me}
+                login-username: ruoyi
+                login-password: ${DRUID_MONITOR_PASSWORD:123456}
             filter:
                 stat:
                     enabled: true
@@ -58,11 +68,4 @@ spring:
                     merge-sql: true
                 wall:
                     config:
-                        multi-statement-allow: false
-            # ClickHouse 数据源
-            clickhouse:
-                enabled: true
-                driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
-                jdbc-url: jdbc:clickhouse://${CLICKHOUSE_HOST:localhost}:${CLICKHOUSE_PORT:8123}/${CLICKHOUSE_DATABASE:easydata}
-                username: ${CLICKHOUSE_USERNAME:default}
-                password: ${CLICKHOUSE_PASSWORD:}
+                        multi-statement-allow: true

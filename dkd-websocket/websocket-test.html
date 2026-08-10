@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket 测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .panel h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .message-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .message-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            background: #f8f9fa;
+        }
+        
+        .message-item .time {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .message-item .content {
+            color: #333;
+            word-wrap: break-word;
+        }
+        
+        .message-item.system {
+            border-left-color: #17a2b8;
+        }
+        
+        .message-item.business {
+            border-left-color: #28a745;
+        }
+        
+        .message-item.heartbeat {
+            border-left-color: #ffc107;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 WebSocket 实时通信测试平台</h1>
+            <p>DKD 长连接模块 - 实时消息推送测试</p>
+        </div>
+        
+        <div class="content">
+            <!-- 连接管理 -->
+            <div class="panel">
+                <h2>📡 连接管理</h2>
+                <div class="form-group">
+                    <label>用户ID</label>
+                    <input type="text" id="userId" value="user001" placeholder="请输入用户ID">
+                </div>
+                <div class="form-group">
+                    <label>服务器地址</label>
+                    <input type="text" id="serverUrl" value="ws://localhost:8080/websocket/" placeholder="WebSocket服务器地址">
+                </div>
+                <div>
+                    <button class="btn btn-success" onclick="connect()">连接</button>
+                    <button class="btn btn-danger" onclick="disconnect()">断开</button>
+                    <span id="status" class="status disconnected">未连接</span>
+                </div>
+            </div>
+            
+            <!-- 发送消息 -->
+            <div class="panel">
+                <h2>📤 发送消息</h2>
+                <div class="form-group">
+                    <label>消息类型</label>
+                    <select id="msgType">
+                        <option value="1">系统消息</option>
+                        <option value="2" selected>业务消息</option>
+                        <option value="3">心跳消息</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>接收者ID（为空则广播）</label>
+                    <input type="text" id="receiverId" placeholder="留空表示群发">
+                </div>
+                <div class="form-group">
+                    <label>消息内容</label>
+                    <textarea id="msgContent" placeholder="请输入消息内容"></textarea>
+                </div>
+                <div>
+                    <button class="btn btn-primary" onclick="sendMessage()">发送消息</button>
+                    <button class="btn btn-warning" onclick="sendHeartbeat()">发送心跳</button>
+                </div>
+            </div>
+            
+            <!-- 统计信息 -->
+            <div class="panel full-width">
+                <h2>📊 连接统计</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="number" id="receivedCount">0</div>
+                        <div class="label">已接收消息</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="sentCount">0</div>
+                        <div class="label">已发送消息</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number" id="connectionTime">--</div>
+                        <div class="label">连接时长</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 消息记录 -->
+            <div class="panel full-width">
+                <h2>💬 消息记录</h2>
+                <button class="btn btn-danger" onclick="clearMessages()" style="margin-bottom: 10px;">清空消息</button>
+                <div class="message-box" id="messageBox"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let ws = null;
+        let receivedCount = 0;
+        let sentCount = 0;
+        let connectTime = null;
+        let heartbeatInterval = null;
+        
+        // 连接WebSocket
+        function connect() {
+            const userId = document.getElementById('userId').value;
+            const serverUrl = document.getElementById('serverUrl').value;
+            
+            if (!userId) {
+                alert('请输入用户ID');
+                return;
+            }
+            
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                alert('已经连接，请先断开');
+                return;
+            }
+            
+            ws = new WebSocket(serverUrl + userId);
+            
+            ws.onopen = function(event) {
+                console.log('WebSocket连接成功');
+                document.getElementById('status').textContent = '已连接';
+                document.getElementById('status').className = 'status connected';
+                connectTime = new Date();
+                startConnectionTimer();
+                startAutoHeartbeat();
+                addMessage('系统消息', '连接成功', 'system');
+            };
+            
+            ws.onmessage = function(event) {
+                console.log('收到消息:', event.data);
+                receivedCount++;
+                document.getElementById('receivedCount').textContent = receivedCount;
+                
+                try {
+                    const message = JSON.parse(event.data);
+                    const typeMap = {1: 'system', 2: 'business', 3: 'heartbeat'};
+                    const typeText = {1: '系统消息', 2: '业务消息', 3: '心跳消息'};
+                    addMessage(typeText[message.type] || '未知消息', 
+                              message.content + (message.data ? '\n数据：' + message.data : ''), 
+                              typeMap[message.type] || 'business');
+                } catch (e) {
+                    addMessage('收到消息', event.data, 'business');
+                }
+            };
+            
+            ws.onclose = function(event) {
+                console.log('WebSocket连接关闭');
+                document.getElementById('status').textContent = '未连接';
+                document.getElementById('status').className = 'status disconnected';
+                stopAutoHeartbeat();
+                addMessage('系统消息', '连接已关闭', 'system');
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket错误:', error);
+                addMessage('系统消息', '连接错误', 'system');
+            };
+        }
+        
+        // 断开连接
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                ws = null;
+                stopAutoHeartbeat();
+            }
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                alert('请先连接WebSocket');
+                return;
+            }
+            
+            const message = {
+                type: parseInt(document.getElementById('msgType').value),
+                senderId: document.getElementById('userId').value,
+                receiverId: document.getElementById('receiverId').value,
+                content: document.getElementById('msgContent').value,
+                timestamp: Date.now()
+            };
+            
+            ws.send(JSON.stringify(message));
+            sentCount++;
+            document.getElementById('sentCount').textContent = sentCount;
+            addMessage('发送消息', message.content, 'business');
+        }
+        
+        // 发送心跳
+        function sendHeartbeat() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                alert('请先连接WebSocket');
+                return;
+            }
+            
+            const message = {
+                type: 3,
+                content: 'ping',
+                timestamp: Date.now()
+            };
+            
+            ws.send(JSON.stringify(message));
+            sentCount++;
+            document.getElementById('sentCount').textContent = sentCount;
+            console.log('发送心跳');
+        }
+        
+        // 自动心跳
+        function startAutoHeartbeat() {
+            heartbeatInterval = setInterval(() => {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    sendHeartbeat();
+                }
+            }, 30000); // 30秒一次
+        }
+        
+        function stopAutoHeartbeat() {
+            if (heartbeatInterval) {
+                clearInterval(heartbeatInterval);
+                heartbeatInterval = null;
+            }
+        }
+        
+        // 连接时长计时
+        function startConnectionTimer() {
+            setInterval(() => {
+                if (connectTime) {
+                    const duration = Math.floor((new Date() - connectTime) / 1000);
+                    const minutes = Math.floor(duration / 60);
+                    const seconds = duration % 60;
+                    document.getElementById('connectionTime').textContent = 
+                        `${minutes}分${seconds}秒`;
+                }
+            }, 1000);
+        }
+        
+        // 添加消息到显示区域
+        function addMessage(title, content, type = 'business') {
+            const messageBox = document.getElementById('messageBox');
+            const messageItem = document.createElement('div');
+            messageItem.className = 'message-item ' + type;
+            
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            
+            messageItem.innerHTML = `
+                <div class="time">${timeStr} - ${title}</div>
+                <div class="content">${content}</div>
+            `;
+            
+            messageBox.insertBefore(messageItem, messageBox.firstChild);
+            
+            // 限制消息数量
+            while (messageBox.children.length > 50) {
+                messageBox.removeChild(messageBox.lastChild);
+            }
+        }
+        
+        // 清空消息
+        function clearMessages() {
+            document.getElementById('messageBox').innerHTML = '';
+            receivedCount = 0;
+            sentCount = 0;
+            document.getElementById('receivedCount').textContent = '0';
+            document.getElementById('sentCount').textContent = '0';
+        }
+        
+        // 页面关闭时断开连接
+        window.onbeforeunload = function() {
+            disconnect();
+        };
+    </script>
+</body>
+</html>

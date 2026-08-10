@@ -30,18 +30,6 @@
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
-        <!-- Spring Cloud bootstrap context for Nacos config on Boot 2.5 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
-        <!-- Nacos configuration center -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-
         <!-- 防止进入swagger页面报类型转换错误，排除3.0.0中的引用，手动增加1.6.2版本 -->
         <dependency>
             <groupId>io.swagger</groupId>
@@ -72,10 +60,16 @@
             <groupId>com.dkd</groupId>
             <artifactId>dkd-generator</artifactId>
         </dependency>
-        <!--  帝可得管理-->
+        <!--  插码管理平台-->
         <dependency>
             <groupId>com.dkd</groupId>
             <artifactId>dkd-manage</artifactId>
+        </dependency>
+
+        <!-- WebSocket长连接模块-->
+        <dependency>
+            <groupId>com.dkd</groupId>
+            <artifactId>dkd-websocket</artifactId>
         </dependency>
     </dependencies>
 

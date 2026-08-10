@@ -1,158 +1,19 @@
-# RuoYi Vending Machine Management Platform
+<p align="center" >
+<span style="background-color: #5373e0;display: inline-block"> 
+<img alt="logo" src="https://likede2-admin.itheima.net/img/logo.3673fab5.png">
+</span>
+</p>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">插码管理平台</h1>
+<h4 align="center">基于RuoYi（SpringBoot+Vue前后端分离）的Java快速开发框架</h4>
 
-This repository is a RuoYi-based Spring Boot backend for a vending machine
-management platform. It keeps the standard RuoYi administration foundation and
-adds business modules for vending machine operations, metadata governance,
-quality checks, behavior tracking, and operational analytics.
 
-## Tech Stack
+## 背景介绍
 
-- Java 11
-- Spring Boot 2.5.x
-- Spring Security and JWT
-- MyBatis
-- MySQL
-- Redis
-- Druid datasource pool
-- Nacos Config Center
-- ClickHouse for selected analytics/query workloads
-- RuoYi admin framework modules
+智能售货机项目是随着互联网及物联网技术的普及及发展，运用现有技术对传统售货机进行改造升级，从B端角度来提升传统售货机的的运营、运维效率，通过运营数据的采集和分析不断优化运营方案，降低运营、运维成本，缩短B端用户的盈利周期，针对不同的摆放点位及商业场景，匹配的不同机型及不同的商品供B端用户贴合自身特点来快速实现商业价值；针对C端用户的购物体验，将传统的纸币硬币购物流程替换成支付宝、微信、银联等线上扫码支付(或刷脸支付)等快捷支付方式。
 
-## Project Structure
+业务模式分为，自营模式、加盟模式或点位主分成模式等。
 
-- `dkd-admin`: application entrypoint and runtime configuration.
-- `dkd-framework`: common framework configuration, security, web, Redis, and datasource support.
-- `dkd-common`: shared utilities, constants, annotations, and base models.
-- `dkd-system`: RuoYi system administration features.
-- `dkd-quartz`: scheduled job support.
-- `dkd-generator`: code generation support.
-- `dkd-manage`: vending machine and data management business modules.
-- `docker`: local infrastructure configuration.
-- `docs`: operational notes and setup documentation.
-- `sql`: database scripts and seed data.
+## 业务介绍
+随着售货机平台方运营售货机设备数量及点位数量越来越多，为了降低成本加快运营和运维效率将有限的资源迅速变现，平台方将系统做了切分，其中客户端包含三个：面向维修人员的运维客户端，主要用来跟踪和解决维修人员的日常工作和及时处理设备故障；运营客户端，主要用来提高日常运营效率，减少缺货设备，提高设备的盈利能力；C端用户客户端，面向C端用户的客户端，提高用户体验，缩短用户购物流程。
 
-## Business Modules
-
-The platform currently covers these functional areas:
-
-- Vending machine management: machine types, devices, channels, regions, and nodes.
-- Product management: SKU categories, SKUs, and channel/product associations.
-- Partner and employee operations: partners, employees, roles, and related management data.
-- Task management: task types, task orders, and task details.
-- Order and policy operations: orders, pricing/policy data, and operational rules.
-- Dashboard analytics: task statistics, sales statistics, SKU ranking, regional sales collection, partner node ranking, and abnormal equipment views.
-- Metadata management: coding scheme field metadata maintenance and attribute lookup.
-- Data level labeling: batch label management with duplicate detection and confirmation flows.
-- Event management: event API entrypoint for future event metadata and event tracking features.
-- Data quality configuration: datasource options, field lists, rule creation, and rule lookup.
-- Customized data management: custom rule lifecycle, channel lookup, start/stop controls, and detail queries.
-- Real-time data verification: list, incremental query, and cursor/max-id endpoints for mobile data verification.
-- Behavior logs: behavior event CRUD, export, and incremental log query support.
-- User behavior tracking: query and export support for user behavior records.
-
-## Nacos Configuration
-
-Application configuration is prepared for Nacos Config Center.
-
-Default data IDs:
-
-- `dkd-admin.yaml`
-- `dkd-admin-druid.yaml`
-
-Local Nacos startup:
-
-```powershell
-docker compose -f docker-compose.nacos.yml up -d
-```
-
-Publish local configuration templates to Nacos:
-
-```powershell
-.\bin\publish-nacos-config.ps1
-```
-
-The local Nacos console is available at:
-
-```text
-http://127.0.0.1:8848/nacos
-```
-
-Default local credentials:
-
-```text
-nacos / nacos
-```
-
-More details are documented in `docs/nacos-config.md`.
-
-## Runtime Configuration
-
-Secrets and environment-specific values should be provided through environment
-variables instead of being committed into source control.
-
-Common variables:
-
-- `NACOS_SERVER_ADDR`
-- `NACOS_NAMESPACE`
-- `NACOS_GROUP`
-- `MYSQL_HOST`
-- `MYSQL_PORT`
-- `MYSQL_DATABASE`
-- `MYSQL_USERNAME`
-- `MYSQL_PASSWORD`
-- `REDIS_HOST`
-- `REDIS_PORT`
-- `REDIS_PASSWORD`
-- `TOKEN_SECRET`
-- `CLICKHOUSE_HOST`
-- `CLICKHOUSE_PORT`
-- `CLICKHOUSE_DATABASE`
-- `CLICKHOUSE_USERNAME`
-- `CLICKHOUSE_PASSWORD`
-- `ALIYUN_OSS_ACCESS_KEY`
-- `ALIYUN_OSS_SECRET_KEY`
-
-Swagger and Druid monitoring are disabled by default in the provided templates.
-Enable them explicitly only in trusted environments.
-
-## Local Development
-
-Prerequisites:
-
-- JDK 11
-- Maven
-- Docker Desktop
-- MySQL
-- Redis
-- Optional: ClickHouse for analytics-related modules
-
-Typical backend startup flow:
-
-```powershell
-docker compose -f docker-compose.nacos.yml up -d
-.\bin\publish-nacos-config.ps1
-mvn -pl dkd-admin -am spring-boot:run
-```
-
-If Nacos is not available, set:
-
-```powershell
-$env:NACOS_CONFIG_ENABLED = "false"
-```
-
-Then the application can fall back to local Spring configuration files.
-
-## Security Notes
-
-- Do not commit database passwords, cloud access keys, JWT secrets, or production tokens.
-- Keep `allowMultiQueries=false` unless there is a reviewed and tested reason to enable it.
-- Keep Swagger and Druid console access disabled or restricted outside local development.
-- Rotate any secret that was previously committed to Git history.
-
-## Verification Status
-
-The Nacos configuration was verified locally by starting the Nacos container,
-publishing both data IDs, and reading them back through the Nacos API.
-
-Maven compilation was not executed in this workspace because neither `mvn` nor
-`mvnw` is currently available.
+为了更好的针对不同B端用户的使用习惯，平台端切分为两个端：平台管理端，主要为了管理设备、货道、商品、工单及运营、运维数据。合作商后台：针对有大量点位但是没有运营能力的用户提供数据接入和销售分成的管理。

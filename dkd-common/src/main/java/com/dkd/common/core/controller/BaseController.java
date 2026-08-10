@@ -49,6 +49,13 @@ public class BaseController
 
     /**
      * 设置请求分页数据
+     *
+     * 面试踩坑点：这里最终会走到 PageHelper.startPage(pageNum,pageSize,orderBy) 三参数重载，
+     * orderBy 来自前端表头排序（orderByColumn/isAsc）。这个重载只会在 SQL 末尾追加
+     * " order by xxx"，不会检测/替换 Mapper.xml 里已经写死的 ORDER BY —— 如果调用方的
+     * SQL 本身已带 ORDER BY（例如 ClickHouse 查询里为了保证 MergeTree 引擎返回顺序而手写的
+     * ORDER BY），叠加后就是双 ORDER BY，直接语法报错。详见 application.yml 里 pagehelper 配置
+     * 的注释，以及 UserBehaviorTrackServiceImpl#demoPageHelperOrderByBug 的复现代码。
      */
     protected void startPage()
     {
