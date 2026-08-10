@@ -64,7 +64,7 @@ spring:
   devtools:
     restart:
       # 热部署开关
-      enabled: true
+      enabled: false
   # redis 配置
   redis:
     # 地址
@@ -74,6 +74,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
+    password: ${REDIS_PASSWORD:}
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -114,7 +115,7 @@ pagehelper:
 # Swagger配置
 swagger:
   # 是否开启swagger
-  enabled: true
+  enabled: ${SWAGGER_ENABLED:false}
   # 请求前缀
   pathMapping: /dev-api
 
@@ -134,12 +135,12 @@ dromara:
     #对应平台的配置写在这里，注意缩进要对齐
     aliyun-oss:
       - platform: aliyun-oss-1 # 存储平台标识
-        enable-storage: true  # 启用存储
+        enable-storage: ${ALIYUN_OSS_ENABLE:false}  # 启用存储
         access-key: ${ALIYUN_OSS_ACCESS_KEY:}
         secret-key: ${ALIYUN_OSS_SECRET_KEY:}
-        end-point: oss-cn-beijing.aliyuncs.com
-        bucket-name: dkd-itheima
-        domain: https://dkd-itheima.oss-cn-beijing.aliyuncs.com/ # 访问域名，注意“/”结尾，例如：https://abc.oss-cn-shanghai.aliyuncs.com/
-        base-path: dkd-images/ # 基础路径
+        end-point: ${ALIYUN_OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}
+        bucket-name: ${ALIYUN_OSS_BUCKET:dkd-itheima}
+        domain: ${ALIYUN_OSS_DOMAIN:https://dkd-itheima.oss-cn-beijing.aliyuncs.com/} # 访问域名，注意“/”结尾，例如：https://abc.oss-cn-shanghai.aliyuncs.com/
+        base-path: ${ALIYUN_OSS_BASE_PATH:dkd-images/} # 基础路径
 
 
