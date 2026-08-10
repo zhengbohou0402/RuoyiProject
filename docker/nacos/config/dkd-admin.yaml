@@ -19,7 +19,7 @@ server:
 
 logging:
   level:
-    com.dkd: ${LOG_LEVEL_DKD:debug}
+    com.icm: ${LOG_LEVEL_DKD:debug}
     org.springframework: warn
 
 user:
@@ -56,7 +56,7 @@ token:
   expireTime: ${TOKEN_EXPIRE_MINUTES:300}
 
 mybatis:
-  typeAliasesPackage: com.dkd.**.domain
+  typeAliasesPackage: com.icm.**.domain
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   configLocation: classpath:mybatis/mybatis-config.xml
 
@@ -84,6 +84,6 @@ dromara:
         access-key: ${ALIYUN_OSS_ACCESS_KEY:}
         secret-key: ${ALIYUN_OSS_SECRET_KEY:}
         end-point: ${ALIYUN_OSS_ENDPOINT:oss-cn-beijing.aliyuncs.com}
-        bucket-name: ${ALIYUN_OSS_BUCKET:dkd-itheima}
-        domain: ${ALIYUN_OSS_DOMAIN:https://dkd-itheima.oss-cn-beijing.aliyuncs.com/}
-        base-path: ${ALIYUN_OSS_BASE_PATH:dkd-images/}
+        bucket-name: ${ALIYUN_OSS_BUCKET:icm-itheima}
+        domain: ${ALIYUN_OSS_DOMAIN:https://icm-itheima.oss-cn-beijing.aliyuncs.com/}
+        base-path: ${ALIYUN_OSS_BASE_PATH:icm-images/}

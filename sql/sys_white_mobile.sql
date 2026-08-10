@@ -1,5 +1,5 @@
 -- 用户行为轨迹查询手机号白名单表
--- 在 dkd 数据库中执行此SQL
+-- 在 icm 数据库中执行此SQL
 
 CREATE TABLE IF NOT EXISTS `sys_white_mobile` (
     `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',

@@ -1,7 +1,7 @@
 services:
   nacos:
     image: nacos/nacos-server:v2.2.0
-    container_name: dkd-nacos
+    container_name: icm-nacos
     environment:
       MODE: standalone
       PREFER_HOST_MODE: hostname
@@ -10,8 +10,8 @@ services:
       JVM_XMN: 128m
       NACOS_AUTH_ENABLE: "true"
       NACOS_AUTH_TOKEN: "ZGtkLW5hY29zLWRldi10b2tlbi1zZWNyZXQta2V5LTIwMjYtY2hhbmdlLW1l"
-      NACOS_AUTH_IDENTITY_KEY: "dkdNacosServer"
-      NACOS_AUTH_IDENTITY_VALUE: "dkdNacosServerSecret"
+      NACOS_AUTH_IDENTITY_KEY: "icmNacosServer"
+      NACOS_AUTH_IDENTITY_VALUE: "icmNacosServerSecret"
     ports:
       - "8848:8848"
       - "9848:9848"
