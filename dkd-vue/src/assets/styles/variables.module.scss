@@ -1,0 +1,53 @@
+// base color
+$blue: #324157;
+$light-blue: #3A71A8;
+$red: #C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow: #FEC171;
+$panGreen: #30B08F;
+
+// 全面亮色主题
+$base-menu-color: #475569;
+$base-menu-color-active: #111827;
+$base-menu-background: #ffffff;
+$base-logo-title-color: #0f172a;
+
+$base-menu-light-color: #475569;
+$base-menu-light-background: #ffffff;
+$base-logo-light-title-color: #0f172a;
+
+$base-sub-menu-background: #f8fafc;
+$base-sub-menu-hover: #f1f5f9;
+
+// 主题色 - 低调蓝色
+$--color-primary: #111827;
+$--color-success: #16a34a;
+$--color-warning: #d97706;
+$--color-danger: #dc2626;
+$--color-info: #64748b;
+$--color-function3: #f8fafc;
+$--border-color-base: #e2e8f0;
+$--background-color-base: #f8fafc;
+$--color-black:#000000;
+$base-sidebar-width: 224px;
+$--color-text-primary: #0f172a;
+
+:export {
+  menuColor: $base-menu-color;
+  menuLightColor: $base-menu-light-color;
+  menuColorActive: $base-menu-color-active;
+  menuBackground: $base-menu-background;
+  menuLightBackground: $base-menu-light-background;
+  subMenuBackground: $base-sub-menu-background;
+  subMenuHover: $base-sub-menu-hover;
+  sideBarWidth: $base-sidebar-width;
+  logoTitleColor: $base-logo-title-color;
+  logoLightTitleColor: $base-logo-light-title-color;
+  primaryColor: $--color-primary;
+  successColor: $--color-success;
+  dangerColor: $--color-danger;
+  infoColor: $--color-info;
+  warningColor: $--color-warning;
+}
